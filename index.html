@@ -191,10 +191,9 @@
    Mặt hàng đọc từ tab Retail qua Apps Script riêng "bayich2_dathang" (chỉ đọc, cần Mã PIN chung).
    Máy chủ chỉ trả: tên, Đơn Vị Sỉ, Đơn Vị Lẻ, Số Lượng, Giá Nhập Sỉ — không có % lãi hay giá bán.
    Đặt theo Đơn Vị Sỉ (Thùng / Bành) nếu có, không thì theo Đơn Vị Lẻ (Kg / Gói).
-   Số Zalo của Vân Bao Bì: ô "Số điện thoại" trong tab Info (sheet vanbaobi, đã xuất bản công khai).
+   Số Zalo của Vân Bao Bì: dòng "Zalo Vân Bao Bì" trong tab CauHinh — máy chủ trả kèm danh sách hàng.
    Trang không lưu bảng giá nhập trong máy; giỏ đang chọn và 5 đơn gần nhất chỉ lưu tên + số lượng. */
 const API = "https://script.google.com/macros/s/AKfycbxN7DJTtoGzdk1jVHO3xR_Lz9USEm-veq9rzrhRoPyX_mbtfRn2LiigGJVpIaXPnRU36A/exec";
-const CSV_INFO_VBB = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlELftcNuwvDUW1GRfmcLXIB7z1GSp_j1v0i3D6T0h_Pc3436H7Z5wjZP_sNRJaGal569VxWcUbt9g/pub?gid=162635782&single=true&output=csv";
 const TEN_TIEM = "Tạp Hóa Bảy Ích 2";
 const KHOA_GIO = "b2_dathang_gio", KHOA_DON = "b2_dathang_don", KHOA_DA_GUI = "b2_dathang_dagui";
 const $ = id => document.getElementById(id);
@@ -272,6 +271,7 @@ const khoa = ten => boDau(ten).trim();
 const timHang = ten => HANG.find(h => khoa(h.ten) === khoa(ten));
 
 function apDung(j) {
+  SDT_VBB = String(j.zaloVanBaoBi || "").replace(/\D/g, "");
   HANG = j.mon.filter(m => m.ten && isFinite(m.giaNhapSi)).map(m => {
     const si = (m.donViSi || "").trim(), le = (m.donViLe || "").trim(), sl = m.soLuong || 1;
     const dv = si || le || "đơn vị";
@@ -387,11 +387,7 @@ function soanTin() {
   if (gc) msg += `\n📝 Ghi chú: ${gc}`;
   return msg;
 }
-let SDT_VBB = "";
-fetch(CSV_INFO_VBB + "&t=" + Date.now()).then(r => r.ok ? r.text() : "").then(t => {
-  const d = String(t).split(/\r?\n/).find(l => /^"?Số điện thoại"?,/i.test(l));
-  if (d) SDT_VBB = d.slice(d.indexOf(",") + 1).replace(/\D/g, "");
-}).catch(() => {});
+let SDT_VBB = "";   // từ CauHinh "Zalo Vân Bao Bì", nạp cùng danh sách hàng
 
 async function guiZalo() {
   const { mon } = tinh(); if (!mon) return;
@@ -402,7 +398,7 @@ async function guiZalo() {
   if (!ds[0] || JSON.stringify(ds[0].i) !== JSON.stringify(i)) ds.unshift({ t: new Date().toISOString(), i });
   ghi(KHOA_DON, ds.slice(0, 5)); veDatLai();
   ghi(KHOA_DA_GUI, GIO);   // quay lại trang → hỏi xoá giỏ (bấm gửi chưa chắc đã dán & gửi trên Zalo)
-  toast(ok ? (SDT_VBB ? "Đã copy đơn — dán vào khung chat Zalo của Vân Bao Bì" : "Đã copy đơn — mở Zalo, dán gửi Vân Bao Bì") : "Chưa copy được — chụp màn hình đơn gửi Zalo");
+  toast(ok ? (SDT_VBB ? "Đã copy đơn — dán vào khung chat Zalo của Vân Bao Bì" : "Đã copy đơn — mở Zalo, dán gửi Vân Bao Bì (chưa có số ở CauHinh)") : "Chưa copy được — chụp màn hình đơn gửi Zalo");
   if (SDT_VBB) setTimeout(() => window.open("https://zalo.me/" + SDT_VBB, "_blank", "noopener"), 700);
 }
 function hoiDaGui() {

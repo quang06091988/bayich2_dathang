@@ -6,6 +6,7 @@
  *
  * Chỉ trả đúng các cột việc đặt hàng cần: tên, Đơn Vị Sỉ (Thùng / Bành… — trống thì đặt theo Đơn Vị Lẻ: Kg, Gói…),
  * Số Lượng (đơn vị lẻ trong 1 đơn vị sỉ) và Giá Nhập Sỉ (giá lần nhập trước). KHÔNG trả % lãi, giá bán.
+ * Kèm số Zalo Vân Bao Bì (dòng "Zalo Vân Bao Bì" ở tab CauHinh).
  * Cột tìm theo CHỮ TIÊU ĐỀ, không theo vị trí: chèn / đổi thứ tự cột Retail không làm đọc sai.
  *
  * CÀI / CẤP QUYỀN: chọn hàm caiDat → Run (chỉ đọc thử, không ghi gì).
@@ -17,6 +18,11 @@ var ID_BAYICH2 = '1Wd4Zvq2xiIiEzou_dvE2YtOk-bJJhAD7se0yREYe9c8';   // sheet có 
 var TAB_RETAIL = 'Retail';
 var TAB_CAU_HINH = 'CauHinh';
 var TD_TRUONG = 'Trường', TD_GIA_TRI = 'Giá trị';
+
+/* Số Zalo nhà phân phối: dòng "Zalo Vân Bao Bì" trong tab CauHinh (sheet bayich2).
+   Sheet Vân Bao Bì chỉ được mở MỘT lần trong caiDat để lấy số điền sẵn — lúc chạy trang không đụng tới sheet đó. */
+var TRUONG_ZALO = 'Zalo Vân Bao Bì';
+var ID_VANBAOBI = '1_uLLmtux8CgvGLZTHgK8oE6EdjOAppXC934Ro7Dv5o8';
 
 var COT_BAT_BUOC = { ten: 'Mặt Hàng', giaNhapSi: 'Giá Nhập Sỉ', soLuong: 'Số Lượng' };
 var COT_PHU = { donViSi: 'Đơn Vị Sỉ', donViLe: 'Đơn Vị Lẻ' };   // có thì dùng
@@ -43,7 +49,7 @@ function doPost(e) {
   }
 }
 
-/* { ok, mon:[{ ten, donViSi, donViLe, soLuong, giaNhapSi }], thoiGian } */
+/* { ok, mon:[{ ten, donViSi, donViLe, soLuong, giaNhapSi }], zaloVanBaoBi, thoiGian } */
 function docRetailDatHang() {
   var ss = SpreadsheetApp.openById(ID_BAYICH2);
   var sh = ss.getSheetByName(TAB_RETAIL);
@@ -73,13 +79,48 @@ function docRetailDatHang() {
       giaNhapSi: gia
     });
   }
-  return { ok: true, mon: ds, thoiGian: new Date().toISOString() };
+  var zalo = layTheoTen(docCauHinhChung(ss), [TRUONG_ZALO]);
+  return { ok: true, mon: ds, zaloVanBaoBi: zalo == null ? '' : String(zalo).trim(), thoiGian: new Date().toISOString() };
 }
 
 /* ══════════════════ CÀI / CẤP QUYỀN ══════════════════ */
 function caiDat() {
+  themDongZalo(SpreadsheetApp.openById(ID_BAYICH2));
   var kq = docRetailDatHang();
-  Logger.log(kq.ok ? ('Đọc thử: ' + kq.mon.length + ' mặt hàng Retail để đặt hàng') : ('Lỗi: ' + kq.loi));
+  Logger.log(kq.ok ? ('Đọc thử: ' + kq.mon.length + ' mặt hàng Retail để đặt hàng · Zalo Vân Bao Bì: ' + (kq.zaloVanBaoBi || 'CHƯA CÓ — điền ở tab ' + TAB_CAU_HINH))
+    : ('Lỗi: ' + kq.loi));
+}
+
+/* Thêm dòng "Zalo Vân Bao Bì" vào cuối tab CauHinh nếu chưa có — số điền sẵn lấy từ ô "Số điện thoại" (tab Info, sheet Vân Bao Bì).
+   Đã có dòng thì giữ nguyên, không ghi gì. */
+function themDongZalo(ss) {
+  var sh = ss.getSheetByName(TAB_CAU_HINH);
+  if (!sh) { Logger.log('Chưa có tab ' + TAB_CAU_HINH + ' — chưa thêm được dòng "' + TRUONG_ZALO + '"'); return false; }
+  if (layTheoTen(docCauHinhChung(ss), [TRUONG_ZALO]) !== undefined) { Logger.log('Tab ' + TAB_CAU_HINH + ' đã có dòng "' + TRUONG_ZALO + '" — giữ nguyên'); return false; }
+  var hang = sh.getDataRange().getValues(), td = hang[0] || [];
+  var cTr = timCot(td, TD_TRUONG), cGt = timCot(td, TD_GIA_TRI), cGc = timCot(td, 'Ghi chú'), cDc = timCot(td, 'Dùng cho');
+  if (cTr < 0 || cGt < 0) { Logger.log('Tab ' + TAB_CAU_HINH + ' thiếu tiêu đề Trường / Giá trị — chưa thêm được dòng "' + TRUONG_ZALO + '"'); return false; }
+  var cuoi = 1;
+  for (var i = 1; i < hang.length; i++) if (String(hang[i][cTr] || '').trim()) cuoi = i + 1;
+  var so = laySoZaloTuVanBaoBi(), r = cuoi + 1;
+  sh.getRange(r, cTr + 1).setValue(TRUONG_ZALO);
+  sh.getRange(r, cGt + 1).setNumberFormat('@').setValue(so);   // dạng chữ để giữ số 0 đầu
+  if (cGc >= 0) sh.getRange(r, cGc + 1).setValue('Số Zalo của nhà phân phối — trang Đặt hàng mở Zalo tới số này. Ghi như số điện thoại (vd 0909 123 456)');
+  if (cDc >= 0) sh.getRange(r, cDc + 1).setValue('Đặt hàng');
+  Logger.log('  + ' + TRUONG_ZALO + ' — ' + (so ? 'lấy từ tab Info của sheet Vân Bao Bì: ' + so : 'để trống, điền tay số Zalo vào tab ' + TAB_CAU_HINH));
+  return true;
+}
+
+function laySoZaloTuVanBaoBi() {
+  try {
+    var sh = SpreadsheetApp.openById(ID_VANBAOBI).getSheetByName('Info');
+    if (!sh) return '';
+    var hang = sh.getDataRange().getDisplayValues();   // giữ đúng chữ đang hiện (số 0 đầu)
+    for (var i = 0; i < hang.length; i++) if (chuanHoa(hang[i][0]) === chuanHoa('Số điện thoại')) return String(hang[i][1] || '').trim();
+  } catch (err) {
+    Logger.log('Không mở được sheet Vân Bao Bì (' + err.message + ') — dòng "' + TRUONG_ZALO + '" để trống');
+  }
+  return '';
 }
 
 /* ══════════════════ phụ trợ (chép từ bayich2_tinhgia — chỉ phần đọc) ══════════════════ */
