@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Đặt Hàng Vân Bao Bì · Bảy Ích 2</title>
+<meta name="description" content="Chọn số thùng, bành, ký cần nhập rồi gửi đơn qua Zalo cho nhà phân phối Vân Bao Bì." />
+<meta name="theme-color" content="#2f5233" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f5233'/%3E%3Cpath d='M8 12l8-4 8 4v9l-8 4-8-4z' fill='none' stroke='%23e9c46a' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M8 12l8 4 8-4M16 16v9' fill='none' stroke='%23e9c46a' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Đặt Hàng Vân Bao Bì · Bảy Ích 2" />
+<meta property="og:description" content="Chọn số thùng, bành, ký cần nhập rồi gửi đơn qua Zalo." />
+<meta property="og:url" content="https://bayich2-dathang.vercel.app/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --green:#2f5233; --green-d:#243f27; --rice:#e9c46a; --rice-soft:#f5e6b8; --cream:#f6f1e4;
+    --ink:#2a2620; --muted:#6f685c; --line:#e4dcc9; --card:#fffdf7;
+    --bad:#b3261e; --shadow:0 8px 24px rgba(47,82,51,.09);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  html,body{margin:0}
+  body{
+    font-family:"Be Vietnam Pro",system-ui,sans-serif; color:var(--ink); font-size:15px; line-height:1.45;
+    background:linear-gradient(180deg,#f2ecd8,#f6f1e4 260px); background-color:var(--cream);
+    min-height:100vh; padding:0 14px calc(110px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+  }
+  button,input,textarea{font:inherit;color:inherit}
+  :focus-visible{outline:2.5px solid var(--rice);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .wrap{max-width:600px;margin:0 auto}
+
+  header{padding:22px 2px 6px;text-align:center}
+  .brand{display:inline-flex;align-items:center;gap:9px;background:var(--green);color:var(--cream);
+    padding:7px 15px;border-radius:999px;font-weight:600;font-size:13px;letter-spacing:.3px}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--rice)}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:28px;line-height:1.12;margin:14px 0 4px;color:var(--green-d);text-wrap:balance}
+  .sub{color:var(--muted);font-size:14px;margin:0}
+
+  .thanh{display:flex;flex-direction:column;gap:10px;margin:18px 0 12px}
+  .dat-lai{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1.5px dashed var(--green);background:var(--card);
+    border-radius:14px;padding:12px 14px;cursor:pointer;color:var(--green-d)}
+  .dat-lai b{display:block;font-size:15px}
+  .dat-lai small{display:block;color:var(--muted);font-size:12.5px}
+  .dat-lai .ic{font-size:22px;flex:none}
+  .search{position:relative}
+  .search input{width:100%;font-size:16px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px 13px 42px;outline:none}
+  .search input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,82,51,.13)}
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .cap{color:var(--muted);font-size:12.5px;margin:0 2px 10px}
+
+  /* ── món ── */
+  .mon{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;background:var(--card);
+    border:1px solid var(--line);border-radius:16px;padding:13px 13px 13px 15px;margin-bottom:9px;transition:border-color .15s,background .15s}
+  .mon.co{border-color:var(--green);background:#f3f6ee}
+  .mon .ten{font-weight:600;font-size:15.5px;line-height:1.3}
+  .mon .qc{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .mon .gia{font-size:13px;color:var(--green-d);font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+  .sl{display:flex;align-items:center;border:1.5px solid var(--green);border-radius:13px;overflow:hidden;align-self:center}
+  .sl button{width:44px;height:48px;border:0;background:var(--green);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+  .sl button:active{background:var(--green-d)}
+  .sl button:disabled{background:#cfd8c8;cursor:default}
+  .sl input{width:56px;height:48px;border:0;text-align:center;font-family:"Fraunces",serif;font-weight:700;font-size:20px;
+    color:var(--green-d);background:#fff;outline:none;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .sl .dv{display:block}
+  .mon .tien{grid-column:1/-1;font-size:12.5px;color:var(--green-d);font-weight:600;font-variant-numeric:tabular-nums}
+
+  .skel{height:84px;border-radius:16px;margin-bottom:9px;background:linear-gradient(100deg,#f0ead9 30%,#f7f2e6 50%,#f0ead9 70%);
+    background-size:200% 100%;animation:sh 1.2s infinite}
+  @keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
+  .err,.empty{text-align:center;color:var(--muted);font-size:13.5px;padding:22px 16px;background:var(--card);border:1px dashed var(--line);border-radius:14px}
+  .err b{color:var(--green-d);display:block;margin-bottom:4px;font-size:14.5px}
+  .retry{margin-top:12px;border:0;background:var(--green);color:#fff;font-weight:600;font-size:14px;padding:11px 22px;border-radius:999px;cursor:pointer}
+
+  /* ── thanh giỏ ── */
+  .gio{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));max-width:576px;margin:0 auto;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--green);color:var(--cream);
+    border:0;border-radius:16px;padding:13px 16px;box-shadow:0 8px 22px rgba(36,63,39,.35);cursor:pointer;text-align:left}
+  .gio .t b{display:block;font-size:15.5px}
+  .gio .t small{display:block;font-size:12.5px;color:#cfdccf;font-variant-numeric:tabular-nums}
+  .gio .xem{background:var(--rice);color:var(--green-d);font-weight:700;border-radius:11px;padding:10px 14px;white-space:nowrap}
+
+  /* ── khung xem đơn ── */
+  .che{position:fixed;inset:0;z-index:60;background:rgba(24,34,25,.45);display:flex;align-items:flex-end;justify-content:center}
+  .tam{background:var(--card);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;border-radius:20px 20px 0 0;
+    padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  @media (min-width:640px){.che{align-items:center;padding:20px}.tam{border-radius:20px}}
+  .tam h2{font-family:"Fraunces",Georgia,serif;font-size:21px;color:var(--green-d);margin:0 0 4px}
+  .tam .ghi-gia{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+  .dong{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .dong .p{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .dong small{display:block;color:var(--muted);font-size:12.5px}
+  .tong{display:flex;justify-content:space-between;padding:12px 0 6px;font-size:17px;font-weight:700;color:var(--green-d);font-variant-numeric:tabular-nums}
+  .tam label{display:block;font-size:13.5px;font-weight:600;color:var(--green-d);margin:10px 0 6px}
+  .tam textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:16px;background:#fff;outline:none;resize:vertical}
+  .tam textarea:focus{border-color:var(--green)}
+  .nut{width:100%;border:0;border-radius:13px;padding:14px;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px}
+  .nut.chinh{background:var(--green);color:#fff}
+  .nut.phu{background:#fff;color:var(--green-d);border:1.5px solid var(--line)}
+  .nut.xoa{background:none;color:var(--bad);font-size:14px;padding:10px;margin-top:4px}
+
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom));z-index:90;
+    background:#241f1c;color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;max-width:calc(100vw - 32px);
+    text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.hien{opacity:1}
+
+  /* khung Mã PIN chung (như Tính giá) */
+  .che-pin{position:fixed;inset:0;z-index:70;background:rgba(24,34,25,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+  .hop-pin{width:100%;max-width:380px;background:#fffdf7;border-radius:16px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+  .hop-pin .td-pin{display:block;font-size:18px;color:#2f5233;margin-bottom:4px}
+  .hop-pin p{margin:0 0 12px;font-size:13.5px;color:#6d7a6e;line-height:1.45}
+  .hop-pin input{width:100%;min-height:48px;border:1.5px solid #ded5bf;border-radius:10px;padding:8px 12px;font-size:22px;letter-spacing:.3em;text-align:center;background:#fff}
+  .hop-pin input:focus{outline:none;border-color:#2f5233;box-shadow:0 0 0 3px rgba(47,82,51,.12)}
+  .hop-pin .loi-pin{color:#b3261e;font-weight:600;min-height:1.3em;margin:8px 0}
+  .hang-nut-pin{display:flex;gap:10px;justify-content:flex-end}
+  .hang-nut-pin button{border:none;border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer}
+  #huy-pin{background:#fff;color:#2f5233;border:1.5px solid #ded5bf}
+  #nut-pin{background:#2f5233;color:#fff}
+  #nut-pin:disabled{opacity:.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="dot"></span> Tạp Hóa Bảy Ích 2</div>
+    <h1>Đặt Hàng Vân Bao Bì</h1>
+    <p class="sub">Chọn số thùng, bành, ký cần nhập → gửi Zalo</p>
+  </header>
+
+  <div class="thanh">
+    <button class="dat-lai" id="datLai" type="button" hidden><span class="ic">↺</span><span><b>Đặt lại đơn lần trước</b><small id="datLaiTom"></small></span></button>
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Tìm mặt hàng…" aria-label="Tìm mặt hàng" />
+    </div>
+  </div>
+  <p class="cap" id="cap"></p>
+  <div id="ds"></div>
+</div>
+
+<button class="gio" id="gio" type="button" hidden>
+  <span class="t"><b id="gioSo">0 món</b><small id="gioTien"></small></span>
+  <span class="xem">Xem đơn ›</span>
+</button>
+
+<div class="che" id="kDon" hidden>
+  <div class="tam" role="dialog" aria-modal="true" aria-labelledby="tdDon">
+    <h2 id="tdDon">Đơn đặt hàng</h2>
+    <p class="ghi-gia">Tạm tính theo giá lần nhập trước — giá thật theo toa của Vân Bao Bì.</p>
+    <div id="donDong"></div>
+    <div class="tong"><span>Tạm tính</span><span id="donTong">0đ</span></div>
+    <label for="ghiChu">Ghi chú (không bắt buộc)</label>
+    <textarea id="ghiChu" rows="2" placeholder="VD: giao sáng mai"></textarea>
+    <button class="nut chinh" id="guiZalo" type="button">📩 Gửi đơn qua Zalo</button>
+    <button class="nut phu" id="chonTiep" type="button">‹ Chọn tiếp</button>
+    <button class="nut xoa" id="xoaGio" type="button">Xoá hết đơn</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Mã PIN chung — hỏi một lần trên máy này trước khi xem giá nhập -->
+<div class="che-pin" id="hop-pin" hidden>
+  <div class="hop-pin" role="dialog" aria-modal="true" aria-labelledby="td-pin">
+    <b class="td-pin" id="td-pin">Nhập Mã PIN chung</b>
+    <p>Cần một lần trên máy này để xem hàng và giá nhập. Xem ô "Mã PIN chung" ở tab CauHinh trong Google Sheet bayich2.</p>
+    <input id="o-pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" aria-label="Mã PIN chung">
+    <p class="loi-pin" id="loi-pin" role="alert"></p>
+    <div class="hang-nut-pin"><button id="huy-pin" type="button">Huỷ</button><button id="nut-pin" type="button">Xác nhận</button></div>
+  </div>
+</div>
+
+<script>
+/* ====== NGUỒN DỮ LIỆU ======
+   Mặt hàng đọc từ tab Retail qua Apps Script riêng "bayich2_dathang" (chỉ đọc, cần Mã PIN chung).
+   Máy chủ chỉ trả: tên, Đơn Vị Sỉ, Đơn Vị Lẻ, Số Lượng, Giá Nhập Sỉ — không có % lãi hay giá bán.
+   Đặt theo Đơn Vị Sỉ (Thùng / Bành) nếu có, không thì theo Đơn Vị Lẻ (Kg / Gói).
+   Số Zalo của Vân Bao Bì: ô "Số điện thoại" trong tab Info (sheet vanbaobi, đã xuất bản công khai).
+   Trang không lưu bảng giá nhập trong máy; giỏ đang chọn và 5 đơn gần nhất chỉ lưu tên + số lượng. */
+const API = "https://script.google.com/macros/s/AKfycbxN7DJTtoGzdk1jVHO3xR_Lz9USEm-veq9rzrhRoPyX_mbtfRn2LiigGJVpIaXPnRU36A/exec";
+const CSV_INFO_VBB = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlELftcNuwvDUW1GRfmcLXIB7z1GSp_j1v0i3D6T0h_Pc3436H7Z5wjZP_sNRJaGal569VxWcUbt9g/pub?gid=162635782&single=true&output=csv";
+const TEN_TIEM = "Tạp Hóa Bảy Ích 2";
+const KHOA_GIO = "b2_dathang_gio", KHOA_DON = "b2_dathang_don", KHOA_DA_GUI = "b2_dathang_dagui";
+const $ = id => document.getElementById(id);
+
+/* ====== TIỆN ÍCH ====== */
+const ngu = ms => new Promise(r => setTimeout(r, ms));
+const tien = n => Math.round(n).toLocaleString("vi-VN") + "đ";
+const so = n => (Math.round(n * 100) / 100).toLocaleString("vi-VN");
+const boDau = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
+const thoat = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const doc = (k, macDinh) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? macDinh : v; } catch { return macDinh; } };
+const ghi = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+/* "0,5" / "1.5" / "2" → số; trống / sai → NaN */
+const docSo = s => { s = String(s == null ? "" : s).trim().replace(/\s/g, ""); if (!s) return NaN; if (/^\d+([.,]\d+)?$/.test(s)) return parseFloat(s.replace(",", ".")); return NaN; };
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("hien"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("hien"), 2600); }
+async function copyChu(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; }
+  catch {
+    try { const ta = document.createElement("textarea"); ta.value = txt; ta.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand("copy"); ta.remove(); return ok; } catch { return false; }
+  }
+}
+
+/* ====== MÃ PIN CHUNG (tab CauHinh) — như Tính giá ====== */
+const KHOA_PIN = "b2_pin";
+const docPin = () => { try { return localStorage.getItem(KHOA_PIN) || ""; } catch { return ""; } };
+const luuPin = p => { try { p ? localStorage.setItem(KHOA_PIN, p) : localStorage.removeItem(KHOA_PIN); } catch {} };
+function hoiPin() {
+  const hop = $("hop-pin"), o = $("o-pin"), bao = $("loi-pin"), nut = $("nut-pin");
+  if (!hop.hidden) return Promise.resolve(null);
+  return new Promise(res => {
+    o.value = ""; bao.textContent = ""; hop.hidden = false; setTimeout(() => o.focus(), 60);
+    const xong = v => { hop.hidden = true; nut.onclick = $("huy-pin").onclick = o.onkeydown = null; res(v); };
+    const thu = async () => {
+      const pin = o.value.trim(); if (!pin) { bao.textContent = "Nhập Mã PIN chung."; return; }
+      nut.disabled = true; nut.textContent = "Đang kiểm tra…"; bao.textContent = "";
+      try {
+        const t = await (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ hanhDong: "kiemPin", pin }) })).text();
+        let j = null; try { j = JSON.parse(t); } catch {}
+        if (j && j.ok) { luuPin(pin); xong(pin); }
+        else bao.textContent = (j && j.loi) || (/không thể mở tệp|unable to open/i.test(t) ? "Google tạm thời không phản hồi — thử lại." : "Chưa kiểm tra được — thử lại.");
+      } catch { bao.textContent = "Mất kết nối — thử lại."; }
+      finally { nut.disabled = false; nut.textContent = "Xác nhận"; }
+    };
+    nut.onclick = thu; $("huy-pin").onclick = () => xong(null);
+    o.onkeydown = e => { if (e.key === "Enter") thu(); if (e.key === "Escape") xong(null); };
+  });
+}
+
+/* ====== ĐỌC HÀNG: thử 5 lần (nghỉ 1–4 giây), mỗi lần tối đa 25 giây — Google hay lỗi thành đợt ====== */
+class LoiSheet extends Error {}   // lỗi máy chủ báo (thiếu cột, PIN…) — thử lại không giúp gì
+async function layHang() {
+  let loi;
+  for (let lan = 1; lan <= 5; lan++) {
+    if (lan > 1) await ngu(1000 * (lan - 1));
+    const ctl = new AbortController(), hg = setTimeout(() => ctl.abort(), 25000);
+    try {
+      const t = await (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ hanhDong: "retail", pin: docPin() }), signal: ctl.signal })).text();
+      let j; try { j = JSON.parse(t); } catch { throw new Error(/không thể mở tệp|unable to open/i.test(t) ? "Google tạm thời không phản hồi." : "Apps Script trả về nội dung lạ."); }
+      if (j && j.ok === false) { const e = new LoiSheet((j.loi || "Apps Script báo lỗi") + "."); e.pin = j.maLoi === "PIN"; throw e; }
+      if (j && Array.isArray(j.mon)) return j;
+      loi = new Error("Google trả về dữ liệu không đúng dạng.");
+    } catch (e) {
+      if (e instanceof LoiSheet) throw e;
+      loi = ctl.signal.aborted ? new Error("Google không trả lời sau 25 giây.") : (e.message && !/fetch|network/i.test(e.message) ? e : new Error("Mất kết nối."));
+    } finally { clearTimeout(hg); }
+  }
+  throw loi;
+}
+
+/* ====== TRẠNG THÁI ====== */
+let HANG = [];                 // [{ten, dv, laKg, qc, gia}]
+let GIO = doc(KHOA_GIO, {});   // { tên món: số lượng }
+const khoa = ten => boDau(ten).trim();
+const timHang = ten => HANG.find(h => khoa(h.ten) === khoa(ten));
+
+function apDung(j) {
+  HANG = j.mon.filter(m => m.ten && isFinite(m.giaNhapSi)).map(m => {
+    const si = (m.donViSi || "").trim(), le = (m.donViLe || "").trim(), sl = m.soLuong || 1;
+    const dv = si || le || "đơn vị";
+    return {
+      ten: m.ten, dv, gia: m.giaNhapSi,
+      laKg: !si && boDau(le) === "kg",   // đặt theo ký thì cho số lẻ (0,5)
+      qc: si && sl > 1 && le ? `${so(sl)} ${le.toLowerCase()}/${si.toLowerCase()}` : ""
+    };
+  });
+  /* giỏ cũ: bỏ món không còn trong Retail */
+  const moi = {};
+  Object.keys(GIO).forEach(t => { const h = timHang(t); if (h && GIO[t] > 0) moi[h.ten] = GIO[t]; });
+  GIO = moi; ghi(KHOA_GIO, GIO);
+}
+const lamTronSL = (h, v) => { if (!isFinite(v) || v <= 0) return 0; return h.laKg ? Math.round(v * 10) / 10 : Math.round(v); };
+function datSL(ten, v) {
+  const h = timHang(ten); if (!h) return;
+  const q = lamTronSL(h, v);
+  if (q > 0) GIO[h.ten] = q; else delete GIO[h.ten];
+  ghi(KHOA_GIO, GIO);
+}
+function tinh() {
+  let mon = 0, tong = 0;
+  Object.keys(GIO).forEach(t => { const h = timHang(t); if (h) { mon++; tong += h.gia * GIO[t]; } });
+  return { mon, tong };
+}
+
+/* ====== VẼ ====== */
+function veDanhSach() {
+  const q = boDau($("q").value.trim()), box = $("ds");
+  const rows = HANG.filter(h => !q || boDau(h.ten).includes(q));
+  $("cap").textContent = HANG.length ? `${HANG.length} mặt hàng · giá là giá nhập lần trước (theo Retail)` : "";
+  if (!rows.length) { box.innerHTML = '<div class="empty">Không tìm thấy mặt hàng nào.</div>'; return; }
+  box.innerHTML = rows.map(h => {
+    const q = GIO[h.ten] || 0, i = HANG.indexOf(h);
+    return `<div class="mon${q ? " co" : ""}">
+      <div><div class="ten">${thoat(h.ten)}</div>
+        <div class="qc">Đặt theo <b>${thoat(h.dv.toLowerCase())}</b>${h.qc ? " · " + thoat(h.qc) : ""}</div>
+        <div class="gia">${tien(h.gia)} / ${thoat(h.dv.toLowerCase())}</div></div>
+      <div class="sl">
+        <button type="button" data-giam="${i}" aria-label="Bớt 1 ${thoat(h.dv.toLowerCase())} ${thoat(h.ten)}" ${q ? "" : "disabled"}>−</button>
+        <input type="text" inputmode="${h.laKg ? "decimal" : "numeric"}" value="${q ? so(q) : ""}" placeholder="0" data-nhap="${i}" aria-label="Số ${thoat(h.dv.toLowerCase())} ${thoat(h.ten)}">
+        <button type="button" data-tang="${i}" aria-label="Thêm 1 ${thoat(h.dv.toLowerCase())} ${thoat(h.ten)}">+</button>
+      </div>
+      ${q ? `<div class="tien">${so(q)} ${thoat(h.dv.toLowerCase())} · ${tien(h.gia * q)}</div>` : ""}
+    </div>`;
+  }).join("");
+  veGio();
+}
+function veGio() {
+  const { mon, tong } = tinh();
+  $("gio").hidden = !mon;
+  $("gioSo").textContent = mon + " món";
+  $("gioTien").textContent = "Tạm tính " + tien(tong);
+}
+function veDatLai() {
+  const ds = doc(KHOA_DON, []), b = $("datLai");
+  const don = ds[0];
+  if (!don || !HANG.length) { b.hidden = true; return; }
+  const d = new Date(don.t);
+  $("datLaiTom").textContent = `${isNaN(d) ? "" : d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" }) + " · "}${don.i.length} món: ` +
+    don.i.slice(0, 3).map(([t, q]) => `${t} ×${so(q)}`).join(", ") + (don.i.length > 3 ? "…" : "");
+  b.hidden = false;
+}
+function veDon() {
+  const dong = Object.keys(GIO).map(t => timHang(t)).filter(Boolean);
+  $("donDong").innerHTML = dong.map(h => `<div class="dong"><span>${thoat(h.ten)}<small>${so(GIO[h.ten])} ${thoat(h.dv.toLowerCase())} × ${tien(h.gia)}</small></span><span class="p">${tien(h.gia * GIO[h.ten])}</span></div>`).join("");
+  $("donTong").textContent = tien(tinh().tong);
+}
+
+/* ====== TẢI ====== */
+let hgTuThu = null, soLanTuThu = 0;
+async function load() {
+  const box = $("ds");
+  clearInterval(hgTuThu);
+  if (!docPin() && !(await hoiPin())) {   // chưa có PIN: không hiện gì
+    HANG = []; $("cap").textContent = ""; $("gio").hidden = true; $("datLai").hidden = true;
+    box.innerHTML = '<div class="err"><b>Cần Mã PIN chung để xem hàng</b>Xem ô "Mã PIN chung" ở tab CauHinh trong Google Sheet bayich2.<br><button class="retry" type="button" data-tai>Nhập PIN</button></div>';
+    return;
+  }
+  box.innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+  try {
+    const j = await layHang();
+    apDung(j);
+    if (!HANG.length) throw new LoiSheet("Tab Retail chưa có mặt hàng nào.");
+    soLanTuThu = 0;
+    veDanhSach(); veDatLai();
+    setTimeout(hoiDaGui, 500);
+  } catch (e) {
+    if (e.pin) { luuPin(""); return load(); }   // PIN đã đổi → hỏi lại
+    HANG = []; $("gio").hidden = true; $("datLai").hidden = true; $("cap").textContent = "";
+    if (e instanceof LoiSheet) { box.innerHTML = `<div class="err"><b>Chưa tải được mặt hàng</b>${thoat(e.message)}<br><button class="retry" type="button" data-tai>Thử lại</button></div>`; return; }
+    henTuThuLai(e.message || "");
+  }
+}
+/* Google trục trặc: đếm ngược 15 giây rồi tự tải lại (dừng khi màn hình ẩn), tối đa 20 lần */
+function henTuThuLai(lyDo) {
+  clearInterval(hgTuThu);
+  const ve = con => { $("ds").innerHTML = `<div class="err"><b>Google đang trục trặc${con != null ? " — tự thử lại sau " + con + " giây" : ""}</b>${thoat(lyDo)}<br><button class="retry" type="button" data-tai>Thử lại ngay</button></div>`; };
+  if (++soLanTuThu > 20) { ve(null); return; }
+  let con = 15; ve(con);
+  hgTuThu = setInterval(() => { if (document.hidden) return; if (--con <= 0) { clearInterval(hgTuThu); load(); } else ve(con); }, 1000);
+}
+
+/* ====== ĐƠN ====== */
+function soanTin() {
+  const dong = Object.keys(GIO).map(t => timHang(t)).filter(Boolean);
+  let msg = `🧾 ĐƠN ĐẶT HÀNG – ${TEN_TIEM}\n`;
+  dong.forEach((h, i) => { msg += `${i + 1}. ${h.ten} — ${so(GIO[h.ten])} ${h.dv.toLowerCase()}\n`; });
+  msg += "━━━━━━━━━━━━\n";
+  msg += `Tạm tính (theo giá lần nhập trước): ${tien(tinh().tong)}`;
+  const gc = $("ghiChu").value.trim();
+  if (gc) msg += `\n📝 Ghi chú: ${gc}`;
+  return msg;
+}
+let SDT_VBB = "";
+fetch(CSV_INFO_VBB + "&t=" + Date.now()).then(r => r.ok ? r.text() : "").then(t => {
+  const d = String(t).split(/\r?\n/).find(l => /^"?Số điện thoại"?,/i.test(l));
+  if (d) SDT_VBB = d.slice(d.indexOf(",") + 1).replace(/\D/g, "");
+}).catch(() => {});
+
+async function guiZalo() {
+  const { mon } = tinh(); if (!mon) return;
+  const ok = await copyChu(soanTin());
+  /* lưu đơn (chỉ tên + số lượng) cho nút "Đặt lại đơn lần trước" — 5 đơn gần nhất, bỏ bản trùng liền kề */
+  const i = Object.keys(GIO).map(t => [t, GIO[t]]);
+  const ds = doc(KHOA_DON, []);
+  if (!ds[0] || JSON.stringify(ds[0].i) !== JSON.stringify(i)) ds.unshift({ t: new Date().toISOString(), i });
+  ghi(KHOA_DON, ds.slice(0, 5)); veDatLai();
+  ghi(KHOA_DA_GUI, GIO);   // quay lại trang → hỏi xoá giỏ (bấm gửi chưa chắc đã dán & gửi trên Zalo)
+  toast(ok ? (SDT_VBB ? "Đã copy đơn — dán vào khung chat Zalo của Vân Bao Bì" : "Đã copy đơn — mở Zalo, dán gửi Vân Bao Bì") : "Chưa copy được — chụp màn hình đơn gửi Zalo");
+  if (SDT_VBB) setTimeout(() => window.open("https://zalo.me/" + SDT_VBB, "_blank", "noopener"), 700);
+}
+function hoiDaGui() {
+  const cu = doc(KHOA_DA_GUI, null);
+  if (!cu) return;
+  ghi(KHOA_DA_GUI, null);
+  if (JSON.stringify(cu) !== JSON.stringify(GIO) || !tinh().mon) return;   // giỏ đã đổi → thôi
+  if (confirm("Đơn vừa rồi đã gửi Vân Bao Bì qua Zalo?\nBấm OK để xoá giỏ, sẵn sàng cho đơn mới.")) {
+    GIO = {}; ghi(KHOA_GIO, GIO); $("kDon").hidden = true; document.body.style.overflow = ""; veDanhSach(); toast("Đã xoá giỏ");
+  }
+}
+function datLaiDonTruoc() {
+  const don = doc(KHOA_DON, [])[0]; if (!don) return;
+  if (tinh().mon && !confirm("Thay các món đang chọn bằng đơn lần trước?")) return;
+  GIO = {}; let bo = 0;
+  don.i.forEach(([t, q]) => { const h = timHang(t); if (h) GIO[h.ten] = lamTronSL(h, q); else bo++; });
+  ghi(KHOA_GIO, GIO); veDanhSach();
+  toast(bo ? `Đã nạp đơn trước — bỏ ${bo} món không còn trong Retail` : "Đã nạp đơn lần trước");
+}
+function moDon() { veDon(); $("kDon").hidden = false; document.body.style.overflow = "hidden"; }
+function dongDon() { $("kDon").hidden = true; document.body.style.overflow = ""; }
+
+/* ====== SỰ KIỆN ====== */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-tang],[data-giam],[data-tai]");
+  if (!b) return;
+  if (b.dataset.tai !== undefined) { soLanTuThu = 0; load(); return; }
+  const h = HANG[+(b.dataset.tang ?? b.dataset.giam)]; if (!h) return;
+  const q = GIO[h.ten] || 0;
+  datSL(h.ten, b.dataset.tang !== undefined ? Math.floor(q) + 1 : Math.ceil(q) - 1);
+  if (navigator.vibrate) navigator.vibrate(12);
+  veDanhSach();
+});
+$("ds").addEventListener("focusin", e => { if (e.target.dataset.nhap !== undefined) e.target.select(); });
+$("ds").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.dataset.nhap !== undefined) e.target.blur(); });
+$("ds").addEventListener("change", e => {
+  if (e.target.dataset.nhap === undefined) return;
+  const h = HANG[+e.target.dataset.nhap], v = docSo(e.target.value);
+  if (h) { if (e.target.value.trim() && !isFinite(v)) toast("Gõ số, vd 2" + (h.laKg ? " hoặc 0,5" : "")); else datSL(h.ten, isFinite(v) ? v : 0); }
+  veDanhSach();
+});
+$("q").addEventListener("input", veDanhSach);
+$("gio").addEventListener("click", moDon);
+$("chonTiep").addEventListener("click", dongDon);
+$("kDon").addEventListener("click", e => { if (e.target === $("kDon")) dongDon(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("kDon").hidden) dongDon(); });
+$("guiZalo").addEventListener("click", guiZalo);
+$("datLai").addEventListener("click", datLaiDonTruoc);
+$("xoaGio").addEventListener("click", () => {
+  if (!confirm("Xoá hết các món trong đơn?")) return;
+  GIO = {}; ghi(KHOA_GIO, GIO); dongDon(); veDanhSach(); toast("Đã xoá đơn");
+});
+document.addEventListener("visibilitychange", () => { if (!document.hidden && HANG.length) setTimeout(hoiDaGui, 400); });
+
+load();
+</script>
+</body>
+</html>
