@@ -17,6 +17,7 @@ Trang chỉ đọc, **không bao giờ ghi vào Sheet**. Mở từ mục "Công 
 
 ```
 index.html        trang web (Vercel: bayich2-dathang.vercel.app)
+og.png            ảnh xem trước khi chia sẻ (1200×630, không có tên miền, số minh hoạ)
 .clasp.json       Script ID của backend, rootDir = appsscript
 appsscript/       backend — Apps Script STANDALONE "bayich2_dathang" (không deploy lên Vercel)
   Code.js         doPost {hanhDong:'retail'|'kiemPin', pin} — không có lệnh ghi
