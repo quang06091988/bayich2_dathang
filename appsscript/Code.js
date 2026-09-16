@@ -9,7 +9,7 @@
  * Kèm số Zalo Vân Bao Bì (dòng "Zalo Vân Bao Bì" ở tab CauHinh).
  * Cột tìm theo CHỮ TIÊU ĐỀ, không theo vị trí: chèn / đổi thứ tự cột Retail không làm đọc sai.
  *
- * CÀI / CẤP QUYỀN: chọn hàm caiDat → Run (chỉ đọc thử, không ghi gì).
+ * CÀI / CẤP QUYỀN: chọn hàm caiDat → Run (thêm dòng "Zalo Vân Bao Bì" vào CauHinh nếu chưa có, rồi đọc thử).
  * CẬP NHẬT CODE: clasp push → clasp deploy -i <deploymentId> (link /exec giữ nguyên).
  */
 
