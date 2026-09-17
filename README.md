@@ -11,7 +11,7 @@ Trang chỉ đọc, **không bao giờ ghi vào Sheet**. Mở từ mục "Công 
   không trả % lãi hay giá bán.
 - Đơn vị đặt: `Đơn Vị Sỉ` nếu có (Thùng, Bành), không thì `Đơn Vị Lẻ` (Kg cho gõ số lẻ như 0,5; Gói…).
 - Số Zalo của Vân Bao Bì: dòng **"Zalo Vân Bao Bì"** trong tab `CauHinh` (sheet bayich2), máy chủ trả kèm danh sách hàng.
-  `caiDat` thêm dòng này nếu chưa có, lấy sẵn số từ tab Info của sheet Vân Bao Bì (chỉ lần đó); sau đó sửa ở CauHinh.
+  `caiDat` thêm dòng trống này nếu chưa có — điền số Zalo vào đó (vd 0909 123 456).
 - Trong máy chỉ lưu: Mã PIN chung, giỏ đang chọn và 5 đơn gần nhất (tên + số lượng) — không lưu bảng giá nhập.
 
 ## Cấu trúc

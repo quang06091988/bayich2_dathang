@@ -19,10 +19,8 @@ var TAB_RETAIL = 'Retail';
 var TAB_CAU_HINH = 'CauHinh';
 var TD_TRUONG = 'Trường', TD_GIA_TRI = 'Giá trị';
 
-/* Số Zalo nhà phân phối: dòng "Zalo Vân Bao Bì" trong tab CauHinh (sheet bayich2).
-   Sheet Vân Bao Bì chỉ được mở MỘT lần trong caiDat để lấy số điền sẵn — lúc chạy trang không đụng tới sheet đó. */
+/* Số Zalo nhà phân phối: dòng "Zalo Vân Bao Bì" trong tab CauHinh (sheet bayich2) — sửa số ở đó. */
 var TRUONG_ZALO = 'Zalo Vân Bao Bì';
-var ID_VANBAOBI = '1_uLLmtux8CgvGLZTHgK8oE6EdjOAppXC934Ro7Dv5o8';
 
 var COT_BAT_BUOC = { ten: 'Mặt Hàng', giaNhapSi: 'Giá Nhập Sỉ', soLuong: 'Số Lượng' };
 var COT_PHU = { donViSi: 'Đơn Vị Sỉ', donViLe: 'Đơn Vị Lẻ' };   // có thì dùng
@@ -91,8 +89,7 @@ function caiDat() {
     : ('Lỗi: ' + kq.loi));
 }
 
-/* Thêm dòng "Zalo Vân Bao Bì" vào cuối tab CauHinh nếu chưa có — số điền sẵn lấy từ ô "Số điện thoại" (tab Info, sheet Vân Bao Bì).
-   Đã có dòng thì giữ nguyên, không ghi gì. */
+/* Thêm dòng "Zalo Vân Bao Bì" (để trống) vào cuối tab CauHinh nếu chưa có. Đã có dòng thì giữ nguyên, không ghi gì. */
 function themDongZalo(ss) {
   var sh = ss.getSheetByName(TAB_CAU_HINH);
   if (!sh) { Logger.log('Chưa có tab ' + TAB_CAU_HINH + ' — chưa thêm được dòng "' + TRUONG_ZALO + '"'); return false; }
@@ -102,25 +99,13 @@ function themDongZalo(ss) {
   if (cTr < 0 || cGt < 0) { Logger.log('Tab ' + TAB_CAU_HINH + ' thiếu tiêu đề Trường / Giá trị — chưa thêm được dòng "' + TRUONG_ZALO + '"'); return false; }
   var cuoi = 1;
   for (var i = 1; i < hang.length; i++) if (String(hang[i][cTr] || '').trim()) cuoi = i + 1;
-  var so = laySoZaloTuVanBaoBi(), r = cuoi + 1;
+  var r = cuoi + 1;
   sh.getRange(r, cTr + 1).setValue(TRUONG_ZALO);
-  sh.getRange(r, cGt + 1).setNumberFormat('@').setValue(so);   // dạng chữ để giữ số 0 đầu
+  sh.getRange(r, cGt + 1).setNumberFormat('@').setValue('');   // dạng chữ để giữ số 0 đầu khi điền số
   if (cGc >= 0) sh.getRange(r, cGc + 1).setValue('Số Zalo của nhà phân phối — trang Đặt hàng mở Zalo tới số này. Ghi như số điện thoại (vd 0909 123 456)');
   if (cDc >= 0) sh.getRange(r, cDc + 1).setValue('Đặt hàng');
-  Logger.log('  + ' + TRUONG_ZALO + ' — ' + (so ? 'lấy từ tab Info của sheet Vân Bao Bì: ' + so : 'để trống, điền tay số Zalo vào tab ' + TAB_CAU_HINH));
+  Logger.log('  + ' + TRUONG_ZALO + ' — để trống, điền số Zalo vào tab ' + TAB_CAU_HINH);
   return true;
-}
-
-function laySoZaloTuVanBaoBi() {
-  try {
-    var sh = SpreadsheetApp.openById(ID_VANBAOBI).getSheetByName('Info');
-    if (!sh) return '';
-    var hang = sh.getDataRange().getDisplayValues();   // giữ đúng chữ đang hiện (số 0 đầu)
-    for (var i = 0; i < hang.length; i++) if (chuanHoa(hang[i][0]) === chuanHoa('Số điện thoại')) return String(hang[i][1] || '').trim();
-  } catch (err) {
-    Logger.log('Không mở được sheet Vân Bao Bì (' + err.message + ') — dòng "' + TRUONG_ZALO + '" để trống');
-  }
-  return '';
 }
 
 /* ══════════════════ phụ trợ (chép từ bayich2_tinhgia — chỉ phần đọc) ══════════════════ */
@@ -144,14 +129,17 @@ function layTheoTen(gt, ds) {
 var TRUONG_PIN = 'Mã PIN chung';
 function kiemPin(ss, pin) {
   var dung = layTheoTen(docCauHinhChung(ss), [TRUONG_PIN]);
-  if (dung === undefined || String(dung).trim() === '')
+  if (dung === undefined || chuanPin(dung) === '')
     return { ok: false, maLoi: 'THIEU_PIN', loi: 'Chưa có "' + TRUONG_PIN + '" trong tab ' + TAB_CAU_HINH + ' — chưa đọc được' };
-  if (String(pin == null ? '' : pin).trim() !== String(dung).trim()) {
+  if (chuanPin(pin) !== chuanPin(dung)) {
     Utilities.sleep(2000);
     return { ok: false, maLoi: 'PIN', loi: 'Sai mã PIN — xem ô "' + TRUONG_PIN + '" ở tab ' + TAB_CAU_HINH };
   }
   return { ok: true };
 }
+
+/* So PIN giống sổ bán hàng (bayich2_pos/appsscript): bỏ mọi khoảng trắng và số 0 đầu — ô PIN bị Sheet đổi thành số vẫn khớp */
+function chuanPin(s) { return String(s == null ? '' : s).replace(/\s+/g, '').replace(/^0+(?=\d)/, ''); }
 
 /* Số từ ô Sheet: số giữ nguyên, chữ kiểu "17.000" / "0,5" / "10%" thì bóc ra. Trống → null */
 function soThuc(v) {
